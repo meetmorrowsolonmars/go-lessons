@@ -1,13 +1,13 @@
 
 .PHONY: clean
 clean:
-	rm -f go-unit-tests.out go-blackbox-cover.out coverage.out
+	rm -f go-unit-tests.out go-blackbox-tests.out coverage.out
 	rm -rf cover-report
 
 .PHONY: go-unit-tests
 go-unit-tests:
 	@echo "\033[0;32mRun unit tests...\033[0m"
-	go test -cover -coverprofile=go-unit-tests.out ./...
+	go test -cover -coverprofile=go-unit-tests.out ./coverage/...
 
 	@echo "\033[0;32mTest coverage...\033[0m"
 	go tool cover -func go-unit-tests.out
