@@ -2,7 +2,8 @@ package repositories
 
 import (
 	"context"
-	"errors"
+	"fmt"
+	"github.com/meetmorrowsolonmars/go-lessons/lesson-1/internal/errors"
 
 	domaincard "github.com/meetmorrowsolonmars/go-lessons/lesson-1/internal/domain/card"
 )
@@ -40,7 +41,7 @@ func (c *CardRepository) GetByUserID(ctx context.Context, userID string) (domain
 	// Можно если корзины нет, то создать ее.
 	card, exists := c.cards[userID]
 	if !exists {
-		return domaincard.Card{}, errors.New("card not found")
+		return domaincard.Card{}, fmt.Errorf("card not found: %w", errors.NotFound)
 	}
 
 	return card, nil

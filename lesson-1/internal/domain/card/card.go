@@ -7,12 +7,12 @@ import (
 )
 
 type Card struct {
-	UserID     string
-	Items      []Item
-	TotalPrice decimal.Decimal
+	UserID     string          `json:"user_id"`
+	Items      []Item          `json:"items"`
+	TotalPrice decimal.Decimal `json:"total_price"`
 }
 
 type Item struct {
 	domainitem.Item
-	Quantity int64
+	Quantity int64 `json:"quantity"`
 }

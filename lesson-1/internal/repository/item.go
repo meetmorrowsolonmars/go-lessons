@@ -2,17 +2,18 @@ package repositories
 
 import (
 	"context"
-	"errors"
+	"fmt"
 
 	domainitem "github.com/meetmorrowsolonmars/go-lessons/lesson-1/internal/domain/item"
+	"github.com/meetmorrowsolonmars/go-lessons/lesson-1/internal/errors"
 )
 
 type ItemRepository struct {
 	items []domainitem.Item
 }
 
-func NewItemRepository(items []domainitem.Item) ItemRepository {
-	return ItemRepository{
+func NewItemRepository(items []domainitem.Item) *ItemRepository {
+	return &ItemRepository{
 		items: items,
 	}
 }
@@ -30,7 +31,7 @@ func (r *ItemRepository) GetItemByID(ctx context.Context, itemID string) (domain
 		}
 	}
 
-	return domainitem.Item{}, errors.New("item not found")
+	return domainitem.Item{}, fmt.Errorf("item not found: %w", errors.NotFound)
 }
 
 func (r *ItemRepository) GetItems(ctx context.Context) ([]domainitem.Item, error) {
