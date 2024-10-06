@@ -125,5 +125,4 @@ func (s *Service) RemoveItem(ctx context.Context, userID string, itemID string) 
 	}
 
 	return card, nil
-
 }
