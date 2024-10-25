@@ -3,5 +3,6 @@ go 1.23.1
 use (
 	goroutines
 	lesson-1
+	lesson-3
 	testing
 )
