@@ -177,7 +177,10 @@
         "amount": {
           "$ref": "#/definitions/typeMoney"
         }
-      }
+      },
+      "required": [
+        "amount"
+      ]
     },
     "balanceCreateTransferResponse": {
       "type": "object"
