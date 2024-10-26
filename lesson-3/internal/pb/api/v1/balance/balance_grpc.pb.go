@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	BalanceService_GetOptions_FullMethodName     = "/go_lessons.lesson_3.v1.balance.BalanceService/GetOptions"
 	BalanceService_CreateAccount_FullMethodName  = "/go_lessons.lesson_3.v1.balance.BalanceService/CreateAccount"
 	BalanceService_CreateTransfer_FullMethodName = "/go_lessons.lesson_3.v1.balance.BalanceService/CreateTransfer"
 )
@@ -27,6 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BalanceServiceClient interface {
+	GetOptions(ctx context.Context, in *GetOptionsRequest, opts ...grpc.CallOption) (*GetOptionsResponse, error)
 	CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error)
 	CreateTransfer(ctx context.Context, in *CreateTransferRequest, opts ...grpc.CallOption) (*CreateTransferResponse, error)
 }
@@ -37,6 +39,15 @@ type balanceServiceClient struct {
 
 func NewBalanceServiceClient(cc grpc.ClientConnInterface) BalanceServiceClient {
 	return &balanceServiceClient{cc}
+}
+
+func (c *balanceServiceClient) GetOptions(ctx context.Context, in *GetOptionsRequest, opts ...grpc.CallOption) (*GetOptionsResponse, error) {
+	out := new(GetOptionsResponse)
+	err := c.cc.Invoke(ctx, BalanceService_GetOptions_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *balanceServiceClient) CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error) {
@@ -61,6 +72,7 @@ func (c *balanceServiceClient) CreateTransfer(ctx context.Context, in *CreateTra
 // All implementations must embed UnimplementedBalanceServiceServer
 // for forward compatibility
 type BalanceServiceServer interface {
+	GetOptions(context.Context, *GetOptionsRequest) (*GetOptionsResponse, error)
 	CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error)
 	CreateTransfer(context.Context, *CreateTransferRequest) (*CreateTransferResponse, error)
 	mustEmbedUnimplementedBalanceServiceServer()
@@ -70,6 +82,9 @@ type BalanceServiceServer interface {
 type UnimplementedBalanceServiceServer struct {
 }
 
+func (UnimplementedBalanceServiceServer) GetOptions(context.Context, *GetOptionsRequest) (*GetOptionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOptions not implemented")
+}
 func (UnimplementedBalanceServiceServer) CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAccount not implemented")
 }
@@ -87,6 +102,24 @@ type UnsafeBalanceServiceServer interface {
 
 func RegisterBalanceServiceServer(s grpc.ServiceRegistrar, srv BalanceServiceServer) {
 	s.RegisterService(&BalanceService_ServiceDesc, srv)
+}
+
+func _BalanceService_GetOptions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOptionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BalanceServiceServer).GetOptions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BalanceService_GetOptions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BalanceServiceServer).GetOptions(ctx, req.(*GetOptionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _BalanceService_CreateAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -132,6 +165,10 @@ var BalanceService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "go_lessons.lesson_3.v1.balance.BalanceService",
 	HandlerType: (*BalanceServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetOptions",
+			Handler:    _BalanceService_GetOptions_Handler,
+		},
 		{
 			MethodName: "CreateAccount",
 			Handler:    _BalanceService_CreateAccount_Handler,

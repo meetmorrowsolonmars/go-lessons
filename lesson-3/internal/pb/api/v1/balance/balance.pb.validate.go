@@ -38,6 +38,221 @@ var (
 // define the regex for a UUID once up-front
 var _balance_uuidPattern = regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 
+// Validate checks the field values on GetOptionsRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *GetOptionsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetOptionsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetOptionsRequestMultiError, or nil if none found.
+func (m *GetOptionsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetOptionsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if _, ok := OptionType_name[int32(m.GetOptionType())]; !ok {
+		err := GetOptionsRequestValidationError{
+			field:  "OptionType",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return GetOptionsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetOptionsRequestMultiError is an error wrapping multiple validation errors
+// returned by GetOptionsRequest.ValidateAll() if the designated constraints
+// aren't met.
+type GetOptionsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetOptionsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetOptionsRequestMultiError) AllErrors() []error { return m }
+
+// GetOptionsRequestValidationError is the validation error returned by
+// GetOptionsRequest.Validate if the designated constraints aren't met.
+type GetOptionsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetOptionsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetOptionsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetOptionsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetOptionsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetOptionsRequestValidationError) ErrorName() string {
+	return "GetOptionsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetOptionsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetOptionsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetOptionsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetOptionsRequestValidationError{}
+
+// Validate checks the field values on GetOptionsResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetOptionsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetOptionsResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetOptionsResponseMultiError, or nil if none found.
+func (m *GetOptionsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetOptionsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GetOptionsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetOptionsResponseMultiError is an error wrapping multiple validation errors
+// returned by GetOptionsResponse.ValidateAll() if the designated constraints
+// aren't met.
+type GetOptionsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetOptionsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetOptionsResponseMultiError) AllErrors() []error { return m }
+
+// GetOptionsResponseValidationError is the validation error returned by
+// GetOptionsResponse.Validate if the designated constraints aren't met.
+type GetOptionsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetOptionsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetOptionsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetOptionsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetOptionsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetOptionsResponseValidationError) ErrorName() string {
+	return "GetOptionsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetOptionsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetOptionsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetOptionsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetOptionsResponseValidationError{}
+
 // Validate checks the field values on Account with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

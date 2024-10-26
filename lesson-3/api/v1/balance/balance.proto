@@ -27,6 +27,12 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
 service BalanceService {
 
+  rpc GetOptions(GetOptionsRequest) returns (GetOptionsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/options"
+    };
+  }
+
   rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse) {
     option (google.api.http) = {
       post: "/api/v1/account"
@@ -49,6 +55,20 @@ service BalanceService {
     };
   };
 
+}
+
+enum OptionType {
+  UNKNOWN = 0;
+  ACCOUNT = 1;
+  TRANSFER = 2;
+}
+
+message GetOptionsRequest {
+  OptionType option_type = 1 [(validate.rules).enum = {defined_only: true}];
+}
+
+message GetOptionsResponse {
+  repeated string options = 1;
 }
 
 message Account {

@@ -57,6 +57,42 @@
         ]
       }
     },
+    "/api/v1/options": {
+      "get": {
+        "operationId": "BalanceService_GetOptions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/balanceGetOptionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "optionType",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "ACCOUNT",
+              "TRANSFER"
+            ],
+            "default": "UNKNOWN"
+          }
+        ],
+        "tags": [
+          "BalanceService"
+        ]
+      }
+    },
     "/api/v1/transfer": {
       "post": {
         "description": "Creates a transfer operation to send money to another account.",
@@ -145,6 +181,26 @@
     },
     "balanceCreateTransferResponse": {
       "type": "object"
+    },
+    "balanceGetOptionsResponse": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "balanceOptionType": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "ACCOUNT",
+        "TRANSFER"
+      ],
+      "default": "UNKNOWN"
     },
     "protobufAny": {
       "type": "object",
